@@ -1,7 +1,7 @@
 package com.juanpabloprado.images;
 
 import com.juanpabloprado.images.resources.ClientResource;
-import com.juanpabloprado.images.resources.FileResource;
+import com.juanpabloprado.images.resources.ImageResource;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -33,7 +33,7 @@ public class App extends Application<ImagesConfiguration> {
   public void run(ImagesConfiguration configuration, Environment environment) throws Exception {
     configureCors(environment);
     environment.jersey().register(MultiPartFeature.class);
-    environment.jersey().register(new FileResource(configuration.getDest()));
+    environment.jersey().register(new ImageResource(configuration.getDest()));
     environment.jersey().register(new ClientResource());
   }
 

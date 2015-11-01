@@ -23,11 +23,11 @@ import org.slf4j.LoggerFactory;
 
 @Path("/v1/images")
 @Produces(MediaType.APPLICATION_JSON)
-public class FileResource {
-  private static final Logger LOGGER = LoggerFactory.getLogger(FileResource.class);
+public class ImageResource {
+  private static final Logger LOGGER = LoggerFactory.getLogger(ImageResource.class);
   private final String dest;
 
-  public FileResource(String dest) {
+  public ImageResource(String dest) {
     this.dest = dest;
   }
 
