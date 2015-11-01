@@ -1,0 +1,16 @@
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <title>Upload File with Dropwizard</title>
+</head>
+<body>
+    <h1>Upload File with Dropwizard</h1>
+    <form action="http://localhost:8080/v1/files" method="post" enctype="multipart/form-data">
+       <p>
+        Choose a file: <input type="file" name="file" />
+       </p>
+       <input type="submit" value="Upload" />
+    </form>
+</body>
+</html>

@@ -1,0 +1,20 @@
+.recommenders
+.metadata
+.gradle
+bin
+.DS_Store
+build
+.project
+.settings
+.classpath
+.private
+
+# IntelliJ files
+*.iml
+.idea/
+*.ipr
+*.iws
+
+# Maven artifacts
+target/
+dependency-reduced-pom.xml
