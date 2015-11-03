@@ -1,5 +1,6 @@
 package com.juanpabloprado.images.resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.juanpabloprado.images.utils.FileIO;
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import javax.activation.MimetypesFileTypeMap;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -49,11 +51,56 @@ public class ImageResource {
   @Produces("image/*")
   public Response getImage(@PathParam("image") String image) {
     File file = new File(dest + image);
-    if(!file.exists()) {
-      throw new WebApplicationException(Response.Status.NOT_FOUND);
+    if (!file.exists()) {
+      throw new WebApplicationException(
+          Response.status(Response.Status.NOT_FOUND)
+              .entity(new Error("No image found"))
+              .build());
     }
     String mimeType = new MimetypesFileTypeMap().getContentType(file);
     return Response.ok(file, mimeType).build();
+  }
+
+  @DELETE
+  @Path("/{image}")
+  public Response deleteImage(@PathParam("image") String image) {
+    try {
+      File file = new File(dest + image);
+      if (!file.exists()) {
+        throw new WebApplicationException(
+            Response.status(Response.Status.NOT_FOUND)
+                .entity(new Error("No image found"))
+                .build());
+      }
+
+      if (file.delete()) {
+        LOGGER.info("** Deleted " + image + " **");
+        return Response.noContent().build();
+      } else {
+        LOGGER.info("Failed to delete " + image);
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new Error("Failed to delete " + image)).build();
+      }
+    } catch (SecurityException e) {
+      LOGGER.info("Unable to delete " + image);
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new Error("Unable to delete " + image)).build();
+    }
+  }
+
+  private class Error {
+    @JsonProperty
+    public final String message;
+
+    public Error(String message) {
+      this.message = message;
+    }
+
+    public Error() {
+      message = null;
+    }
+
+    public String getMessage() {
+      return message;
+    }
   }
 
 }
