@@ -20,6 +20,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.slf4j.Logger;
@@ -51,7 +52,9 @@ public class ImageResource {
     }
 
     String image = URLEncoder.encode(fileDetail.getFileName(), "UTF-8");
-    return Response.created(new URI(image)).build();
+    // https://github.com/dropwizard/dropwizard/issues/878
+    final URI createdUri = UriBuilder.fromResource(ImageResource.class).path(image).build();
+    return Response.created(createdUri).build();
   }
 
   @GET
